@@ -7,7 +7,14 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Executing a query
 // prepare method returns a statement which is an instance of pdo statement
-$statement = $pdo->prepare('SELECT * FROM products ORDER BY create_date DESC');
+$search = $_GET['search'] ?? '';
+if($search){
+  $statement = $pdo->prepare('SELECT * FROM products WHERE title LIKE :title ORDER BY create_date DESC');
+  $statement->bindValue(':title',"%$search%");
+}
+else{
+  $statement = $pdo->prepare('SELECT * FROM products ORDER BY create_date DESC');
+}
 // execute() will execute the query on DB
 $statement->execute();
 // Fetch each record from DB as Associative Array
@@ -23,22 +30,22 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link href="app.css" rel="stylesheet">
     <title>Products CRUD</title>
   </head>
-  <style>
-      body{
-          padding: 50px;
-      }
-      .thumb-image{
-        width: 50px;
-      }
-  </style>
   <body>
     <h1>Products CRUD</h1>
     <p>
         <a href="create.php" class="btn btn-success">Create Product</a>        
     </p>
+      <form action="">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" value="<?php echo $search ?>"
+                  placeholder="Search Products" name="search">
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+      </form>
+
     <table class="table">
     <thead>
         <tr>
