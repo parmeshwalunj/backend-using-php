@@ -9,6 +9,7 @@ $errors = [];
 $title = '';
 $price = '';
 $description = '';
+
 // echo $_SERVER['REQUEST_METHOD'].'<br>';
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $title = $_POST['title'];
@@ -46,7 +47,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         header('Location: index.php');
     }
 }
-
 function randomString($n)
 {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -69,12 +69,13 @@ function randomString($n)
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="app.css" rel="stylesheet">
-
+    
     <title>Products CRUD</title>
   </head>
   <body>
     <h1>Create new Product</h1>
 
+    
     <?php if(!empty($errors)): ?>
     <div class="alert alert-danger">
         <?php foreach ($errors as $error): ?>
@@ -84,6 +85,9 @@ function randomString($n)
     <?php endif; ?>
 
     <form action="" method="post" enctype="multipart/form-data">
+    <?php if ($product['image']): ?>
+        <img src="<?php echo $product['image'] ?>" class="update-image" alt="">
+    <?php endif; ?>
     <div class="mb-3">
         <label>Product Image</label>
         <br>
